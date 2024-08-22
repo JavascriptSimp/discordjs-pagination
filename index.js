@@ -11,7 +11,7 @@ const { ActionRowBuilder, ButtonStyle, ButtonBuilder, EmbedBuilder } = require("
 module.exports = async (interaction, pages, buttons, timeout = 60000, footer = 'Page {current}/{total}') => {
 
     if (!pages) throw new Error("No pages provided.");
-    if (pages.length === 1) throw new Error("There is only one page.");
+    //if (pages.length === 1) throw new Error("There is only one page."); I think for lists, one page is very possible
 
     if (isNaN(timeout)) throw new Error("Timeout is not a number.");
     if (timeout < 0) throw new Error("Timeout cannot be less than 0.");
@@ -22,7 +22,7 @@ module.exports = async (interaction, pages, buttons, timeout = 60000, footer = '
 
     if (!buttons) throw new Error("No buttons provided.");
     if (buttons.length !== 4 && buttons.length !== 2) throw new Error("There must be either 2 or 4 buttons.");
-    if (buttons.length === 4 && buttons[0].data.style === ButtonStyle.Link || buttons[1].data.style === ButtonStyle.Link || buttons[2].data.style === ButtonStyle.Link || buttons[3].data.style === ButtonStyle.Link) throw new Error("Buttons cannot be links.");
+    if (buttons.length === 4 && buttons[0].data.style === ButtonStyle.Link || buttons[1].data.style === ButtonStyle.Link || buttons[2]?.data.style === ButtonStyle.Link || buttons[3]?.data.style === ButtonStyle.Link) throw new Error("Buttons cannot be links.");
     if (buttons.length === 2 && buttons[0].data.style === ButtonStyle.Link || buttons[1].data.style === ButtonStyle.Link) throw new Error("Buttons cannot be links.");
 
     if (!interaction.deferred) await interaction.deferReply();
@@ -62,7 +62,7 @@ module.exports = async (interaction, pages, buttons, timeout = 60000, footer = '
     });
 
     collector.on("collect", async (i) => {
-
+        i.deferUpdate()
         const update = async () => {
             let buttonsArray = [];
 
